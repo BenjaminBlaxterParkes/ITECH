@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
+urlpatterns = patterns ('',
+	url(r'^admin/', include(admin.site.url)),
+	url(r'^rango/',	include('rango.urls')),
+	)
