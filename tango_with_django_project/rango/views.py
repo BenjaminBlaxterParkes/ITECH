@@ -16,7 +16,7 @@ def get_server_side_cookie(request, cookie, defult_val=None):
 	return val
 
 
-def vistitor_cookie_handler(request):
+def visitor_cookie_handler(request):
 	visits = int(get_server_side_cookie(request, 'visits', '1'))
 	last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
 	last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
@@ -39,8 +39,9 @@ def index(request):
 	page_list = Page.objects.order_by('-views')[:5]
 	context_dict = {'categories': category_list, 'pages': page_list}
 
-	vistitor_cookie_handler(request)
+	visitor_cookie_handler(request)
 	context_dict['visits'] = request.session['visits']
+	print(request.session['visits'])
 
 	response = render(request, 'rango/index.html', context=context_dict)
 # 	return HttpResponse("Rango says hey there partner! <br/> <a href='/rango/about/'>About</a>"
@@ -52,6 +53,9 @@ def about(request):
 	if request.session.test_cookie_worked():
 		print("TEST COOKIE WORKED!")
 		request.session.delete_test_cookie()
+
+		visitor_cookie_handler(request)
+
 	return render(request, 'rango/about.html', {})
 	# return HttpResponse("Rango says here is the about page. <br/> <a href='/rango/'>Index</a>")
 
