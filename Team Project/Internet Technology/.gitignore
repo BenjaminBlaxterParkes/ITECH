@@ -1,0 +1,13 @@
+.idea/
+*.pyc
+*.sqlite3
+*.cpython-36.pyc
+__pycache__/
+*.py[cod]
+*.DS_STORE
+*.DS_Store
+0001_initial.py
+/media/profile_images/
+/fan_theory/migrations/*.py
+!/fan_theory/migrations/0001_initial.py
+!/fan_theory/migrations/__init__.py

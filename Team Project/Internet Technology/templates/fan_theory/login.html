@@ -1,0 +1,28 @@
+{% extends 'fan_theory/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Login
+{% endblock %}
+
+{% block body_block %}
+<h1>Login to Fan Theory</h1>
+<div class="container">
+	<form id="login_form" class="form-signin" method="post" action="{% url 'login' %}">
+		{% csrf_token %}
+		<label for="inputName" class="sr-only">User name</label>
+		<input type="text" id="inputName" placeholder="User name" name="username" class="form-control" value="" size="50" />
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input type="password" id="inputPassword" placeholder="Password" class="form-control" name="password" value="" size="50" />
+		<button class="btn btn-primary btn-block" type="submit" value="submit">Sign in</button>
+	</form>
+	<div class="social_login" align="center">
+		<img class="social_login_img" style="width:50px; height:50px;" src="{% static "images/wtf-twitter-icon.png" %}" alt="Twitter Icon" onclick="location.href="{% url 'social:begin' 'twitter' %}"">
+	  	<a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
+	  	<img class="social_login_img" style="width:40px; height:40px;" src="{% static "images/wtf-facebook-icon.png" %}" alt="Facebook Icon">
+	  	<a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+	  	<img class="social_login_img" style="width:40px; height:40px;" src="{% static "images/wtf-google-icon.png" %}" alt="Google Icon">
+	  	<a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
+	</div>
+</div>
+{% endblock %}

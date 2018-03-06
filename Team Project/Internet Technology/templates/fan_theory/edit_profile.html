@@ -1,0 +1,35 @@
+{% extends 'fan_theory/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	{% if user_profile %}
+		{{ user_profile.user.username }}
+	{% else %}
+		User does not exist
+	{% endif %}
+{% endblock %}
+
+{% block body_block %}
+	<div class="container">
+	{% if user_profile %}
+		<div class="card" style="width: 20rem;">
+			<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" alt="{{ user_profile.user.username }}'s Avatar Image" />
+			<div class="card-block">
+				<h4 class="card-title">{{ user_profile.user.username }}</h4>
+				<p class="card-text">{{ user_profile.biography }}</p>
+			</div>
+		</div>
+		{% if user == user_profile.user %}
+		<form id="profile_form" method="post" action="{% url 'edit_user_profile' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div>{{ profile_form.as_p }}</div>
+			<input type="submit" name="submit" value="Update" />
+		</form>
+		{% else %}
+		<div>You are not authorised to edit this profile!</div>
+		{% endif %}
+		{% else %}
+		The specified user profile does not exist!
+	{% endif %}
+	</div>
+{% endblock %}

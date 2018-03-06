@@ -1,0 +1,163 @@
+{% extends 'fan_theory/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	{% if user_profile %}
+		{{ user_profile.user.username }}
+	{% else %}
+		User does not exist
+	{% endif %}
+{% endblock %}
+
+{% block body_block %}
+	<div class="container">
+		{% if user_profile %}
+		<div class="row">
+			<div class="col col-md-8">
+				<div class="card" style="width: 100%;">
+					<div class="card-header">
+						<h2>{{ user_profile.user.username }}</h2>
+					</div>
+					<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" style="width: 15rem; height: 220px;" alt="{{ user_profile.user.username }}'s Avatar Image" />
+					<div class="card-block">
+						<h4 class="card-title">Biography</h4>
+						<p class="card-text">{{ user_profile.biography }}</p>
+						{% if user == user_profile.user %}
+							<a href="{% url 'edit_user_profile' %}" class="btn btn-primary">Edit Profile</a>
+						{% else %}
+							{% if user.is_authenticated %}
+							<form action="" method="post">
+								{% csrf_token %}
+								{% if you_are_following %}
+								<button class="btn btn-primary" name="follow-button">Unfollow</button>
+								{% else %}
+								<button class="btn btn-primary" name="follow-button">Follow</button>
+								{% endif %}
+							</form>
+							{% endif %}	
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="col-6 col-md-4">
+				<div class="card" style="width: 20rem;">
+					<img class="card-img-top" style="width:100%; height: 220px;" src="{% static "images/my_interests.png" %}" alt="Most Viewed Category Image">
+					<div class="card-block">
+						<h4 class="card-title">My Interest Feed</h4>
+						<p class="card-text">Fan theory interests based on your tag selections.</p>
+					</div>
+					{% if fan_theories %}
+					<ul class="list-group list-group-flush">
+						{% for fan_theory in fan_theories %}
+						<li class="list-group-item">
+							<a href="{% url 'show_fan_theory' fan_theory.category.slug fan_theory.slug %}">{{ fan_theory.title }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<li class="list-group-item">
+						<strong>There are no fan theories present.</strong>
+					</li>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-sm">
+				<div class="card" style="width: 20rem;">
+					<img class="card-img-top" style="width:100%; height: 220px;" src="{% static "images/my_theories.png" %}" alt="Most Viewed Category Image">
+					<div class="card-block">
+						<h4 class="card-title">
+							{% if user == user_profile.user %}
+							My Theories
+							{% else %}
+							{{ user_profile.user.username }}
+							{%endif%}
+						</h4>
+						<p class="card-text">Theories that you have created.</p>
+					</div>
+					{% if fan_theories %}
+					<ul class="list-group list-group-flush">
+						{% for fan_theory in fan_theories %}
+						<li class="list-group-item">
+							<a href="{% url 'show_fan_theory' fan_theory.category.slug fan_theory.slug %}">{{ fan_theory.title }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<li class="list-group-item">
+						<strong>There are no fan theories present.</strong>
+					</li>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-sm">
+				<div class="card" style="width: 20rem;">
+					<div class="card-block">
+						<h4 class="card-title">Following</h4>
+						{% if user == user_profile.user %}
+						<p class="card-text">Users you are following.</p>
+						{% else %}
+						<p class="card-text">Users {{user_profile}} is following.</p>
+						{% endif %}
+					</div>
+					{% if following %}
+					<ul class="list-group list-group-flush">
+						{% for followee in following %}
+						<li class="list-group-item">
+							<span class="glyphicon glyphicon-user icon-size">
+									<img style="width: 50px;" src="{{ MEDIA_URL }}{{ followee.followee.userprofile.picture }}" alt="{{ followee.followee }}'s Avatar Image" />
+							</span>
+							<a href="{% url 'show_user_profile' followee.followee %}">{{ followee.followee }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<li class="list-group-item">
+						{% if user == user_profile.user %}
+						<strong>You are not following anyone.</strong>
+						{% else %}
+						<strong>{{user_profile}} is not following anyone.</strong>
+						{% endif %}
+					</li>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-sm">
+				<div class="card" style="width: 20rem;">
+					<div class="card-block">
+						<h4 class="card-title">Followers</h4>
+						{% if user == user_profile.user %}
+						<p class="card-text">Users that are following you.</p>
+						{% else %}
+						<p class="card-text">Users that are following {{user_profile}}.</p>
+						{% endif %}
+					</div>
+					{% if followers %}
+					<ul class="list-group list-group-flush">
+						{% for follower in followers %}
+						<li class="list-group-item">
+							<span class="glyphicon glyphicon-user icon-size">
+								<img style="width: 50px;" src="{{ MEDIA_URL }}{{ follower.follower.userprofile.picture }}" alt="{{ follower.follower }}'s Avatar Image" />
+							</span>
+							<a href="{% url 'show_user_profile' follower.follower %}">{{ follower.follower }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<li class="list-group-item">
+						{% if user == user_profile.user %}
+						<strong>You have no followers.</strong>
+						{% else %}
+						<strong>{{user_profile}} has no followers.</strong>
+						{% endif %}
+					</li>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<p>The specified user profile does not exist!</p>
+	{% endif %}
+	</div>
+{% endblock %}

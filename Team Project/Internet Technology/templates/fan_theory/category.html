@@ -1,0 +1,66 @@
+{% extends 'fan_theory/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	{{ category.name }}
+{% endblock %}
+
+{% block body_block %}
+	<div class="container">
+		{% if category %}
+			<h1>{{ category.name }} Fan Theories</h1>
+			{% if tags %}
+				<h4>Category Tags:</h4>
+				<div>
+				{% for tag in tags %}
+				{{tag.name}}
+				{% endfor %}
+				</div>
+			{% endif %}
+			{% if fan_theories %}
+			<div>
+				<h4>Sort by:</h4>
+				<select value="{{sort_method}}" onchange="if (this.value) window.location.href=this.value">
+					<option {% if sort_method == "title" %}selected{% endif %} value="?order_by=title">Title</option>
+					<option {% if sort_method == "author" %}selected{% endif %} value="?order_by=author">Author</option>
+					<option {% if sort_method == "-views" %}selected{% endif %} value="?order_by=views">Views</option>
+					<option {% if sort_method == "-likes" %}selected{% endif %} value="?order_by=likes">Likes</option>
+					<option {% if sort_method == "-comment_count" %}selected{% endif %} value="?order_by=comment_count">Comments</option>
+				</select>
+			</div>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col" {% if sort_method == "title" %}class="table-success"{% endif %}>Title</th>
+						<th scope="col" {% if sort_method == "author" %}class="table-success"{% endif %}>Author</th>
+						<th scope="col" {% if sort_method == "-views" %}class="table-success"{% endif %}>Views</th>
+						<th scope="col" {% if sort_method == "-likes" %}class="table-success"{% endif %}>Likes</th>
+						<th scope="col" {% if sort_method == "-comment_count" %}class="table-success"{% endif %}>Comments</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						{% for fan_theory in fan_theories %}
+						<tr>
+							<td><a href="{% url 'show_fan_theory' category.slug fan_theory.slug %}">{{ fan_theory.title }}</a></td>
+							<td><a href="{% url 'show_user_profile' fan_theory.author %}">{{ fan_theory.author }}</a></td>
+							<td>{{fan_theory.views}}</td>
+							<td>{{fan_theory.views}}</td>
+							<td>{{fan_theory.comment_count}}</td>
+						</tr>
+						{% endfor %}
+					</tr>
+				</tbody>
+			</table>
+			{% else %}
+				<strong>No fan theories currently in {{ category.name }} category.</strong>
+			{% endif %}
+			{% if user.is_authenticated %}
+			<a class="btn btn-primary" href=href="{% url 'add_fan_theory' category.slug %}" role="button">Add a Fan Theory</a>
+			</br></br>
+			{% endif %}
+		{% else %}
+			The specified category does not exist!
+		{% endif %}
+	</div>
+{% endblock %}

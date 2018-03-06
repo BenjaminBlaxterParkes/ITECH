@@ -1,0 +1,30 @@
+{% extends 'fan_theory/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+About
+{% endblock %}
+
+{% block body_block %}
+<div class="container">
+	<div class="row">
+		<h1 class="display-5">Full List of Fan Fiction Categories.</h1>
+	</div>
+	<div class="row">
+		{% if category_list %}
+			<ul>
+			{% for category in category_list %}
+			<li>
+				<a href="{% url 'show_category' category.slug %}">{{ category.name }}</a>
+			</li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<strong>There are currently no fan fiction categories.</strong>
+		{% endif %}
+	</div>
+	{% if user.is_authenticated %}
+		<div><a class="nav-link" <a href="{% url 'add_category' %}"> Add a New Category</a></div>
+	{% endif %}
+</div>
+{% endblock %}

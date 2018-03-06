@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load fan_theory_template_tags %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width,
+	initial-scale=1, shrink-to-fit=no"> <meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="{% static 'images/favicon.ico' %}"> <title>
+	FanTheory - {% block title %}Homepage{% endblock %} </title>
+	<!-- Bootstrap core CSS -->
+	<link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+	<!-- Custom styles for this template -->
+	<link href="https://v4-alpha.getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+	<link href="{% static 'css/jquery.upvote.css' %}" rel="stylesheet">
+	<link href="{% static 'css/template.css' %}" rel="stylesheet">
+
+	<link href="{% static 'css/wtfstyle.css' %}" rel="stylesheet">
+</head>
+<body style="width: 100%; margin: 0%;">
+		<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+			<img class="wtflogo" style="width:100px; height:80px;" src="{% static "images/ComicLogo.png" %}" alt="WTF Logo" align="left" href="{% url 'index' %}"" onclick="location.href = '{% url 'index' %}'"">
+			<button class="navbar-toggler navbar-toggler-right hidden-lg-up"
+			type="button"
+			data-toggle="collapse"
+			data-target="#navbar"
+			aria-controls="navbar"
+			aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand" href="{% url 'index' %}">Wild Theory Fanatics</a>
+			<div class="collapse navbar-collapse" id="navbar">
+				<ul class="navbar-nav mr-auto">
+					{% if categories %}
+					<ul class="navbar-nav mr-auto">
+						{% for category in categories %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'show_category' category.slug %}">{{ category.name }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<strong>There are no categories present.</strong>
+					{% endif %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'about' %}"> About </a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					{% if user.is_authenticated %}
+	                <li class="nav-item dropdown">
+	                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+	                        <span class="glyphicon glyphicon-user"></span> 
+	                        <strong>{{ user.username }}</strong>
+	                        <span class="glyphicon glyphicon-chevron-down"></span>
+	                    </a>
+	                    <ul class="dropdown-menu">
+	                        <li>
+	                            <div class="navbar-login">
+	                                <div class="row">
+	                                    <div class="col-lg-4">
+	                                        <p class="text-center">
+	                                            <span class="glyphicon glyphicon-user icon-size">
+														<img style="width: 50px;" src="{{ MEDIA_URL }}{{ user.userprofile.picture }}" alt="{{ node.author }}'s Avatar Image" />
+												</span>
+	                                        </p>
+	                                    </div>
+	                                    <div class="col-lg-8">
+	                                        <p class="text-left"><strong>{{ user.username }}</strong></p>
+	                                        <p class="text-left small">{{ user.email }}</p>
+	                                        <p class="text-left">
+	                                            <a href="{% url 'show_user_profile' user %}" class="btn btn-primary btn-block btn-sm">My Profile</a>
+	                                        </p>
+											<p class="text-left">
+												<a href="{% url 'my_comments' %}" class="btn btn-primary btn-block btn-sm">My comments</a>
+											</p>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </li>
+	                        <li class="divider"></li>
+	                        <li>
+	                            <div class="navbar-login navbar-login-session">
+	                                <div class="row">
+	                                    <div class="col-lg-12">
+	                                        <p>
+												<a class="btn btn-danger btn-block" href="{% url 'logout' %}"> Logout </a>
+	                                        </p>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </li>
+	                    </ul>
+	                </li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'login' %}"> Login </a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'register' %}"> Register Here</a>
+					</li>
+					{% endif %}
+	            </ul>
+			</div>
+		</nav>
+		<div class="headbar" id="headbar">
+			<div class="headbar-background">
+				{% if user.is_authenticated %}
+				<h2 class="headbar-h2">Welcome {{ user.username }}!</h2>
+				<p class="headbar-p">Use WTF to share your craziest fan theory ideas!</p>
+				{% else %}
+				<h2 class="headbar-h2">Welcome!</h2>
+				<p class="headbar-p">Register or Login to post your theories!</p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+<!-- 	<div style="margin-bottom: 20px;"></div>
+ -->	{% block body_block %}
+	{% endblock %}
+	<!-- Bootstrap core JavaScript ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"> </script>
+	<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+	<script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"> </script>
+	<script src="{% static 'js/jquery.upvote.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug --> <script
+	src= "https://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"> </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+[{"model": "fan_theory.category", "pk": 1, "fields": {"name": "Movies", "views": 0, "likes": 0, "slug": "movies"}},
+{"model": "fan_theory.category", "pk": 2, "fields": {"name": "TV Shows", "views": 0, "likes": 0, "slug": "tv-shows"}},
+{"model": "fan_theory.category", "pk": 3, "fields": {"name": "Comics", "views": 0, "likes": 0, "slug": "comics"}},
+{"model": "fan_theory.category", "pk": 4, "fields": {"name": "Books", "views": 0, "likes": 0, "slug": "books"}},
+{"model": "fan_theory.category", "pk": 5, "fields": {"name": "Video Games", "views": 0, "likes": 0, "slug": "video-games"}}]

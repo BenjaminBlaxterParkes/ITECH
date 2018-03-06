@@ -1,0 +1,37 @@
+{% extends 'fan_theory/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Add A Comment
+{% endblock %}
+
+{% block body_block %}
+	<h2>Comments</h2>
+	<div>
+		{% for comment in comments %}
+			<div style="padding: 5px; margin-bottom: 5px; border-left: 6px solid #2B98F0; background-color: #DEFFFF;">
+				<h3>{{ comment.author }}</h3>
+				<div>{{ comment.comment }}</div>
+			</div>
+		{% endfor %}
+	</div>
+	{% if user.is_authenticated %}
+		<div>
+			<h2>Add a comment:</h2>
+			<form id="comment_form" method="post" action="/fan_theory/comment_section/">
+				{% csrf_token %}
+				{% for hidden in form.hidden_fields %}
+					{{ hidden }}
+				{% endfor %}
+				{% for field in form.visible_fields %}
+					{{ field.errors }}
+					{{ field.help_text }}
+					{{ field }}
+				{% endfor %}
+				<input type="submit" name="submit" value="Post Comment" />
+			</form>
+		</div>
+	{% else %}
+		Please login to post a comment.
+	{% endif %}
+{% endblock %}

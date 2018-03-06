@@ -1,0 +1,21 @@
+{% extends 'fan_theory/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+About
+{% endblock %}
+
+{% block body_block %}
+<div class="container-fluid">
+	<div class="row">
+		<h1 class="display-5">
+		This project was put together by Team Silver.</h1>
+	</div>
+	<div class="row">
+		<img src="{{ MEDIA_URL }}cat.jpg" alt="Picture of a cat" />
+	</div>
+	<div class="row">
+		<p>Number of times you have visited this site: {{ visits }}</p>
+	</div>
+</div>
+{% endblock %}

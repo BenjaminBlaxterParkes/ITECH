@@ -1,0 +1,176 @@
+{% extends 'fan_theory/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Index
+{% endblock %}
+{% block body_block %}
+<div class="background" id="background">
+	<div class="container" id="container">
+		<div class="row">
+			<div class="col-sm">
+				<div class="card" style="width: 20rem;">
+					<div class="card-background">
+						<img class="card-img" style="width:100%; height: 220px;" src="{% static "images/wtfinterests.png" %}" alt="Most Viewed Category Image">
+							<div class="card-block">
+								<h4 class="card-title">My Interest Feed</h4>
+								<p class="card-text">Fan theory interests based on your tag selections.</p>
+							</div>
+						{% if fan_theories %}
+						<ul class="list-group">
+							{% for fan_theory in fan_theories %}
+							<li class="list-group-item">
+								<a href="{% url 'show_fan_theory' fan_theory.category.slug fan_theory.slug %}">{{ fan_theory.title }}</a>
+							</li>
+							{% endfor %}
+						</ul>
+						{% else %}
+						<strong>There are no fan theories present.</strong>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm">
+				<div class="card" style="width: 20rem;">
+					<div class="card-background">
+						<img class="card-img" style="width:100%; height: 220px;" src="{% static "images/wfteye.png" %}" alt="Most Viewed Category Image">
+						<div class="card-block">
+							<h4 class="card-title">Most Viewed Categories</h4>
+							<p class="card-text">Check out our most viewed categories.</p>
+						</div>
+						{% if categories %}
+						<ul class="list-group">
+							{% for category in categories %}
+							<li class="list-group-item" href="{% url 'show_category' category.slug %}" onclick="location.href = '{% url 'show_category' category.slug %}'">
+								<a class="category-link" href="{% url 'show_category' category.slug %}">{{ category.name }}</a>
+							</li>
+							{% endfor %}
+						</ul>
+						{% else %}
+						<strong>There are no categories present.</strong>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm">
+				<div class="card" style="width: 20rem;">
+					<div class="card-background">
+						<img class="card-img" style="width:100%; height: 220px;" src="{% static "images/wftlike.png" %}" alt="Most Liked Theories Image">
+						<div class="card-block">
+							<h4 class="card-title">Most Like Fan Theories</h4>
+							<p class="card-text">Have a look at the most liked fan theories.</p>
+						</div>
+						{% if fan_theories %}
+						<ul class="list-group">
+							{% for fan_theory in fan_theories %}
+							<li class="list-group-item">
+								<a href="{% url 'show_fan_theory' fan_theory.category.slug fan_theory.slug %}">{{ fan_theory.title }}</a>
+							</li>
+							{% endfor %}
+						</ul>
+						{% else %}
+						<strong>There are no fan theories present.</strong>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% if user.is_authenticated %}
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-sm">
+				<div class="card" style="width: 20rem;">
+					<div class="card-background">
+						<img class="card-img" style="width:100%; height: 220px;" src="{% static "images/wtfmytheories.png" %}" alt="Most Viewed Category Image">
+						<div class="card-block">
+							<h4 class="card-title">
+								{% if user == user_profile.user %}
+								My Theories
+								{% else %}
+								{{ user_profile.user.username }}
+								{%endif%}
+							</h4>
+							<p class="card-text">Theories that you have created.</p>
+						</div>
+						{% if my_fan_theories %}
+						<ul class="list-group">
+							{% for fan_theory in my_fan_theories %}
+							<li class="list-group-item">
+								<a href="{% url 'show_fan_theory' fan_theory.category.slug fan_theory.slug %}">{{ fan_theory.title }}</a>
+							</li>
+							{% endfor %}
+						</ul>
+						{% else %}
+						<li class="list-group-item">
+							<strong>There are no fan theories present.</strong>
+						</li>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm">
+					<div class="card" style="width: 20rem;">
+						<div class="card-background">
+								<div class="card-block">
+								<h4 class="card-title">Following</h4>
+								<p class="card-text">Users you are following.</p>
+							</div>
+							{% if following %}
+							<ul class="list-group">
+								{% for followee in following %}
+								<li class="list-group-item">
+									<span class="glyphicon glyphicon-user icon-size">
+											<img style="width: 50px;" src="{{ MEDIA_URL }}{{ followee.followee.userprofile.picture }}" alt="{{ followee.followee }}'s Avatar Image" />
+									</span>
+									<a href="{% url 'show_user_profile' followee.followee %}">{{ followee.followee }}</a>
+								</li>
+								{% endfor %}
+							</ul>
+							{% else %}
+							<li class="list-group-item">
+								<strong>You are not following anyone.</strong>
+							</li>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="card" style="width: 20rem;">
+						<div class="card-background">
+							<div class="card-block">
+								<h4 class="card-title">Followers</h4>
+								<p class="card-text">Users that are following you.</p>
+							</div>
+							{% if followers %}
+							<ul class="list-group">
+								{% for follower in followers %}
+								<li class="list-group-item">
+									<span class="glyphicon glyphicon-user icon-size">
+										<img style="width: 50px;" src="{{ MEDIA_URL }}{{ follower.follower.userprofile.picture }}" alt="{{ follower.follower }}'s Avatar Image" />
+									</span>
+									<a href="{% url 'show_user_profile' follower.follower %}">{{ follower.follower }}</a>
+								</li>
+								{% endfor %}
+							</ul>
+							{% else %}
+							<li class="list-group-item">
+								<strong>You have no followers.</strong>
+							</li>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>
+	{% endif %}
+	
+	<div class="row" style="margin-top: 10px;">
+		<div class="card-background">
+			<div class="card card-outline-primary mb-3 text-center">
+				<div class="card-block">
+					<p class="card-text">Number of times you have visited this site: {{ visits }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}

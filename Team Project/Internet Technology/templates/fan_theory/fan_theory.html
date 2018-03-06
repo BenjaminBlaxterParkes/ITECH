@@ -1,0 +1,110 @@
+{% extends 'fan_theory/base.html' %}
+{% load staticfiles %}
+{% load mptt_tags %}
+{% load fan_theory_template_tags %}
+
+{% block title_block %}
+	{% if fan_theory %}
+		<h1>{{ fan_theory.title }}</h1>
+	{% else %}
+		The specified fan theory does not exist!
+	{% endif %}
+{% endblock %}
+
+{% block body_block %}
+<div class="container">
+	{% if fan_theory %}
+	
+		<script>
+			user_id = {{ user_id }}
+		</script>
+		<h1>{{ fan_theory.title }}</h1>
+		<h2>Author: <a href="{% url 'show_user_profile' fan_theory.author %}">{{ fan_theory.author }}</a></h2>
+		<div style="background-color: pink;">{{ fan_theory.text_content|linebreaks }}</div>
+		<h4>Number of views: {{ fan_theory.views }}</h4>
+		<div id="comment-section">
+			<h1>Comments</h1>
+			{% if comments %}
+				{% recursetree comments %}
+					<!-- <div style="padding: 5px; margin-bottom: 5px; border-left: 6px solid #2B98F0; background-color: #DEFFFF;"> -->
+						<div class="jumptarget" id="comment-{{ node.id }}"><div style="padding: 5px; margin-bottom: 0px; border: 6px solid #2B98F0; background-color: #DEFFFF; ">
+							<div class="row">
+								<div class="col-md-11">
+									<div class="row">
+										<div class="col-md-1 text-center">
+											<img style="width: 50px;" src="{{ MEDIA_URL }}{{ node.author.userprofile.picture }}" alt="{{ node.author }}'s Avatar Image" />
+										</div>
+										<div class="col-md-11">
+											<h4><a style="clear: both;" href="{% url 'show_user_profile' node.author %}">{{ node.author }}</a></h4>
+											<h5>{{ node.posted_at }}</h5>
+										</div>
+									</div>
+									<div>{{ node.comment|linebreaks }}</div>
+								</div>
+								<div class="col-md-1">
+									<span class="float-right">
+										<div class="upvote" data-id="comment-{{ node.id }}">
+											<a class="upvote {{node.upvote}}"></a>
+											<span class="count">{{node.votes}}</span>
+											<a class="downvote {{node.downvote}}"></a>
+											<a class="star"></a>
+										</div>
+									</span>
+								</div>
+							</div>
+						{% if user.is_authenticated %}
+							<button class="btn-default" data-toggle="collapse" data-target="#viewdetails{{ node.id }}" data-parent="#comment-section">Reply</button>
+							<div class="collapse" id="viewdetails{{ node.id }}">
+								<h4>Reply to <a href="{% url 'show_user_profile' node.author %}">{{ node.author }}</a>:</h4>
+								<form id="comment_form" method="post">
+									{% csrf_token %}
+									{% for hidden in form.hidden_fields %}
+										{{ hidden }}
+									{% endfor %}
+									{% for field in form.visible_fields %}
+										<div>{{ field.errors }}</div>
+										<div>{{ field.help_text }}</div>
+										<div>{{ field }}</div>
+									{% endfor %}
+									<input type="hidden" name="reply_id" value="{{ node.id }}">
+									<input type="submit" name="submit" value="Post Reply" />
+								</form>
+							</div>
+							<div style="margin-bottom: 5px;"></div>
+						<!-- </div> -->
+						{% else %}
+							<!-- </div> -->
+						{% endif %}
+						{% if not node.is_leaf_node %}
+							{{ children }}
+						{% endif %}
+					</div></div>
+				{% endrecursetree %}
+			{% else %}
+				<div>There are no comments for this fan theory</div>
+			{% endif %}
+			{% if user.is_authenticated %}
+			<div>
+				<h2>Post a comment:</h2>
+				<form id="comment_form" method="post">
+					{% csrf_token %}
+					{% for hidden in form.hidden_fields %}
+						{{ hidden }}
+					{% endfor %}
+					{% for field in form.visible_fields %}
+						<div>{{ field.errors }}</div>
+						<div>{{ field.help_text }}</div>
+						<div>{{ field }}</div>
+					{% endfor %}
+					<input type="submit" name="submit" value="Post Comment" />
+				</form>
+			</div>
+			{% else %}
+				<div>Please login to post a comment.</div>
+			{% endif %}
+		</div>
+	{% else %}
+		<p>The specified fan theory does not exist!</p>
+	{% endif %}
+	</div>
+{% endblock %}
