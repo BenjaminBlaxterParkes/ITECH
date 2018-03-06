@@ -18,7 +18,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = '/fan_theory/login/'
-LOGOUT_URL = 'fan_theory/logout'
+LOGOUT_URL = 'fan_theory/logout/'
 LOGIN_REDIRECT_URL = '/fan_theory/'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -131,22 +131,9 @@ SOCIAL_AUTH_TWITTER_SECRET = 'xLPlOTuRfLbgVcul0llwfvFrITvkv2uHEIYLC7bfAbtliwEwW4
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='836372434144-lpa8od6feeui7el22bc0lqhanqvqn2q0.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '4mxjzfhlwMBzwzVIQeFaTZ2o'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-'https://www.googleapis.com/auth/userinfo.email',
-'https://www.googleapis.com/auth/userinfo.profile'
-]
-
-# Google+ SignIn (google-plus)
-SOCIAL_AUTH_GOOGLE_PLUS_IGNORE_DEFAULT_SCOPE = True
-SOCIAL_AUTH_GOOGLE_PLUS_SCOPE = [
-'https://www.googleapis.com/auth/plus.login',
-'https://www.googleapis.com/auth/userinfo.email',
-'https://www.googleapis.com/auth/userinfo.profile'
-]
 
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/fan_theory/'
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 # Internationalization
